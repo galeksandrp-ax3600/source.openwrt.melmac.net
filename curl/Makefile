@@ -87,7 +87,7 @@ define Package/curl
   TITLE:=A client-side URL transfer utility
 endef
 
-define Package/libcurl
+define Package/libcurl/Default
   $(call Package/curl/Default)
   SECTION:=libs
   CATEGORY:=Libraries
@@ -99,8 +99,20 @@ define Package/libcurl
   ABI_VERSION:=4
 endef
 
-define Package/libcurl/config
-  source "$(SOURCE)/Config.in"
+define Package/libcurl-wolfssl
+  $(call Package/libcurl/Default)
+endef
+
+define Package/libcurl-openssl
+  $(call Package/libcurl/Default)
+endef
+
+define Package/libcurl-wolfssl/config
+  source "$(SOURCE)/Config-wolfssl.in"
+endef
+
+define Package/libcurl-openssl/config
+  source "$(SOURCE)/Config-openssl.in"
 endef
 
 TARGET_CFLAGS += $(FPIC) -ffunction-sections -fdata-sections
@@ -174,10 +186,16 @@ define Package/curl/install
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/curl $(1)/usr/bin/
 endef
 
-define Package/libcurl/install
+define Package/libcurl-wolfssl/install
 	$(INSTALL_DIR) $(1)/usr/lib
 	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libcurl.so.* $(1)/usr/lib/
 endef
 
-$(eval $(call BuildPackage,libcurl))
+define Package/libcurl-openssl/install
+	$(INSTALL_DIR) $(1)/usr/lib
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libcurl.so.* $(1)/usr/lib/
+endef
+
+$(eval $(call BuildPackage,libcurl-openssl))
+$(eval $(call BuildPackage,libcurl-wolfssl))
 $(eval $(call BuildPackage,curl))
