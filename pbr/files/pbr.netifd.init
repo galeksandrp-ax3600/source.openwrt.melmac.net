@@ -426,7 +426,7 @@ ips() {
 			fi
 		;;
 		create)
-			param="hash:$type comment"
+			param="hash:$type comment maxelem 131072"
 			[ "$destIpset" -eq 0 ] && [ "$target" = 'dst' ] && return 1
 			[ "$srcIpset" -eq 0 ] && [ "$target" = 'src' ] && return 1
 			ipset -q -! create "$ipset" $param 2>/dev/null || failFlag=1
@@ -437,7 +437,7 @@ ips() {
 		create_default)
 			[ "$userIpsetSupported" -eq 0 ] && return 1
 			for type in 'ip' 'net'; do
-				param="hash:$type comment"
+				param="hash:$type comment maxelem 131072"
 				ipset="${ipsPrefix}_${iface}_${target}_${type}"
 				ipset6="${ipsPrefix}_${iface}6_${target}_${type}"
 				ipset -q -! create "$ipset" $param 2>/dev/null || failFlag=1
@@ -450,7 +450,7 @@ ips() {
 			[ "$resolverIpsetSupported" -eq 0 ] && return 1
 			case "$resolverIpset" in
 				dnsmasq.ipset)
-					param="hash:$type comment"
+					param="hash:$type comment maxelem 131072"
 					ipset -q -! create "$ipset" $param 2>/dev/null || failFlag=1
 					if [ "$ipv6Enabled" -ne 0 ]; then
 						ipset -q -! create "$ipset6" $param family inet6 2>/dev/null || failFlag=1
