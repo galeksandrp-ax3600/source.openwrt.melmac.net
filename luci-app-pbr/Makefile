@@ -12,6 +12,6 @@ LUCI_DESCRIPTION:=Provides Web UI for Policy Based Routing Service.
 LUCI_DEPENDS:=+luci-compat +luci-mod-admin-full +pbr
 LUCI_PKGARCH:=all
 
-include ../../luci.mk
+include ../../luci/luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature
